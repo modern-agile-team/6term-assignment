@@ -36,7 +36,7 @@ function solution(numbers, hand) {
             let cntR = 0;
             cntL += Math.abs(lPointer[0] - tempRow);
             cntL += Math.abs(lPointer[1] - tempCell);
-            cntR += Math.abs(rPointer[0] - tempRow); 
+            cntR += Math.abs(rPointer[0] - tempRow);
             cntR += Math.abs(rPointer[1] - tempCell);
             if (cntL < cntR) {
                 useHand.push('L');
