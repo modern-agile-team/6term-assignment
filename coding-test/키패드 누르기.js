@@ -4,8 +4,8 @@ function solution(numbers, hand) {
     //2. 2,5,8,0은 현재 위치에서 가까운 손
     //3. 현재 손가락의 위치를 알려줄 것이 필요
 
-    let lPointer = [3,0];
-    let rPointer = [3,2];
+    const lPointer = [3,0];
+    const rPointer = [3,2];
     const useHand = []; //결과값을 담을 배열
     const keyPad = {    //각 번호를 객체로 구현
         1 : [0,0],
