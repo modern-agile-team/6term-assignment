@@ -1,9 +1,11 @@
 "use strict";
 
-const index = (req, res) => {
-    res.render('home/index');
-};
+const output = {
+    index:(req, res) => {
+        res.render('home/index');
+    },
+}
 
 module.exports = {
-    index
+    output,
 }

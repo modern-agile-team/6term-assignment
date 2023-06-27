@@ -12,7 +12,7 @@ function calculator() {
     add_sub(num, oper);
 
     const result = num.reduce((total, num) => {
-        total += (num !== 0) ? num : 0;
+        total += (num !== null) ? num : 0;
         return total;
     });
 
@@ -53,11 +53,11 @@ function mul_div(num, oper) {
         if (oper[i] === '*' || oper[i] === '/'){
             if(oper[i] === '*') {
                 num[i+1] = num[i] * num[i+1]
-                num[i] = 0;
+                num[i] = null;
             }
             if(oper[i]=== '/') {
                 num[i+1] = num[i] / num[i+1];
-                num[i] = 0;
+                num[i] = null;
             }
         }
     }
@@ -68,11 +68,11 @@ function add_sub(num, oper) {
         if (oper[i] === '+' || oper[i] === '-'){
             if(oper[i] === '+') {
                 num[i+1] = Number(num[i]) + Number(num[i+1])
-                num[i] = 0;
+                num[i] = null;
             }
             if(oper[i]=== '-') {
                 num[i+1] = Number(num[i]) - Number(num[i+1]);
-                num[i] = 0;
+                num[i] = null;
             }
         }
     }
