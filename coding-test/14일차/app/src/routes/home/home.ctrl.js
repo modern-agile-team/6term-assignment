@@ -29,6 +29,11 @@ const process = {
         const response = user.register();
         return res.json(response);
     },
+    todolist: (req, res) => {
+        const user = new User(req.body);
+        const response = user.todolist();
+        return res.json(response);
+    },
 };
 
 module.exports = {
