@@ -33,10 +33,13 @@ function addText(text) {
     revise.value = "✏"
 
     //삭제
-    // const delete = document.createElement('input')
+    const deleteBox = document.createElement('input');
+    deleteBox.classList.add('deleteBox');
+    deleteBox.setAttribute('type','button');
+    deleteBox.value = "🗑";
 
     //div에 넣기
-    newDiv.append(newCheckBox ,newText, revise);
+    newDiv.append(newCheckBox ,newText, revise, deleteBox);
 
     document.querySelector('.s-box').appendChild(newDiv);      
   }
