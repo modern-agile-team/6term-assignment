@@ -2,5 +2,12 @@
 
 const db = require('../config/db');
 
+class TodoStorage {
+    static plusTodo() {
+        return new Promise((resolve, reject) => {
 
-module.exports = db;
+        });
+    }
+};
+
+module.exports = TodoStorage;
