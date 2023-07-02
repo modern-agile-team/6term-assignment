@@ -46,6 +46,19 @@ function addText(text) {
     document.querySelector('.s-box').appendChild(newDiv);      
   }
 
+  //fetch로 보낼 text데이터를 담은 객체
+  const req = {
+    text: newText.value,
+  };
+
+  //fetch를 통해서 서버로 값을 보낸다.
+  fetch('/todolist', {
+    method: "POST",
+    headers: {
+        "Content-Type" : "application/json",
+    },
+    body: JSON.stringify(req),
+  });
 
 //del 버튼 클릭 시 동작
 const delBtn = document.querySelector('.deleteBox');
