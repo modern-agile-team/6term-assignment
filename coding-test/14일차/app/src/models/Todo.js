@@ -2,12 +2,10 @@
 
 const TodoStorage = require('./TodoStorage');
 
-
-
 class Todo {
     constructor(body) {
         this.body = body;
-    }
+    }a
 
     async newText() {
         const text = this.body;
