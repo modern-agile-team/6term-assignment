@@ -13,6 +13,7 @@ router.get("/todolist", ctrl.output.todolist);
 // router.post("/login", ctrl.process.login);
 // router.post("/register", ctrl.process.register);
 router.post("/todolist", ctrl.process.todolist);
+router.get("/loadtodo", ctrl.process.loadtodo);
 
 
 module.exports = router;

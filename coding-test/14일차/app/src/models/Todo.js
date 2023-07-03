@@ -9,7 +9,7 @@ class Todo {
 
     async loadtodo() {
         const {description} = await this.body;
-        return TodolistStorage.plusTodo(description);
+        return TodolistStorage.loadTodo(description);
     }
 
     async todolist() {

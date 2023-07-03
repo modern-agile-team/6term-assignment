@@ -4,12 +4,15 @@ const input = document.querySelector('#input');
 const plusBtn = document.querySelector('#button');
 
 window.addEventListener('DOMContentLoaded', ()=> {
+    let text = input.value;
+
+    newText(text);
     const db_host = {
         description: text,
     };
     
     fetch('/loadtodo', {
-        method: "POST", //rest의 전달 기능  
+        method: "GET", //rest의 전달 기능  
         headers: {
             "Content-Type" : "application/json",
         },
