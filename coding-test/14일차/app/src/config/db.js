@@ -2,14 +2,14 @@
 
 const mysql = require('mysql');
 
-const db = mysql.createConnetion({
-    host: "todolistdb.cy8ym9wg6atj.ap-northeast-2.rds.amazonaws.com",
-    user: "admin",
-    password: "skdiljj0421",
-    database: "todolistdb",
+const db = mysql.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,  
 });
 
-db.connet();
+db.connect();
 
 module.exports = db;
 
