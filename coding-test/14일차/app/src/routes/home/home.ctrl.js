@@ -34,6 +34,12 @@ const process = {
         const response = await todo.todolist();
         return res.json(response);
     },
+
+    loadtodo: async (req, res) => {
+        const todo = new Todo(req.body);
+        const response = await todo.loadtodo();
+        return res.json(response);
+    },
 };
 
 module.exports = {

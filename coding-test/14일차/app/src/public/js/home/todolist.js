@@ -1,15 +1,33 @@
 "use strict";
 
-//plus 버튼 클릭 시 동작
 const input = document.querySelector('#input');
 const plusBtn = document.querySelector('#button');
+
+window.addEventListener('DOMContentLoaded', ()=> {
+    const db_host = {
+        description: text,
+    };
+    
+    fetch('/loadtodo', {
+        method: "POST", //rest의 전달 기능  
+        headers: {
+            "Content-Type" : "application/json",
+        },
+        body: JSON.stringify(db_host),
+    })
+    .then((res)=>{
+        res.text()
+    });
+});
+
+
+//plus 버튼 클릭 시 동작
 plusBtn.addEventListener('click', () => {
     let text = input.value;
 
     const req = {
         description: text,
     };
-
     if(text !== "") {
         addText(text);
         fetch('/todolist', {

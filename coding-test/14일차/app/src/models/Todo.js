@@ -7,6 +7,11 @@ class Todo {
         this.body = body;
     }
 
+    async loadtodo() {
+        const {description} = await this.body;
+        return TodolistStorage.plusTodo(description);
+    }
+
     async todolist() {
         const {description} = await this.body;
         return TodolistStorage.plusTodo(description);
