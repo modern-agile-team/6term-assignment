@@ -14,7 +14,7 @@ class Todo {
 
     async checktodo() {
         const {id, is_check} = await this.body;
-        return TodolistStorage.reviseTodo(id, is_check);
+        return TodolistStorage.reviseTodo(parseInt(id), is_check);
     }
 
     async todolist() {

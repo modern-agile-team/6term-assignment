@@ -62,20 +62,21 @@ plusBtn.addEventListener('click', () => {
 
 //checkbox 체크 시 동작
 const checkBtn = document.querySelector('.check-box');
-const itemId = document.querySelector('.print');
+const itemId = document.querySelector('.divItem');
+const printSpan = document.querySelector('.print');
 checkBtn.addEventListener('change', ()=> {
     let checkNum = 0;
+    console.log(checkBtn.checked);
 
     if(checkBtn.checked) {
-        input.style.textDecorationLine = "line-through";
+        printSpan.style.textDecorationLine = "line-through";
         checkNum = 1;
     } else {
-        input.style.textDecorateionLine = "none";
-        checkNum = 0;
+        printSpan.style.textDecorationLine = "";
     }
 
     const req = {
-        id: id,
+        id: itemId.id,
         is_check: checkNum,
     }
 
@@ -86,12 +87,11 @@ checkBtn.addEventListener('change', ()=> {
         },
         body: JSON.stringify(req),
     })
-    .then((res)=>res.text()
+    .then((res)=>res.json())
     .then((data) => {
         // 서버의 응답에 따른 추가 동작 수행
         console.log(data);
     })
-    );
 });
 
 //todo추가 함수

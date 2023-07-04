@@ -14,7 +14,7 @@ class TodolistStorage {
         })
     }
 
-    static reviseTodo() {
+    static reviseTodo(id, is_check) {
         return new Promise((resolve, reject)=> {
             const query = "UPDATE todo SET is_check=(?) WHERE id = (?)";
             db.query(query, [id ,is_check], (err, data)=> {
