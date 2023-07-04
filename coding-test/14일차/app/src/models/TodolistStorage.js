@@ -17,17 +17,17 @@ class TodolistStorage {
     static reviseTodo() {
         return new Promise((resolve, reject)=> {
             const query = "UPDATE todo SET is_check=(?) WHERE id = (?)";
-            db.query(query, [is_check], (err, data)=> {
+            db.query(query, [id ,is_check], (err, data)=> {
                 if(err) reject (`${err}`);
                 resolve (data);
             })
         })
     }
 
-    static plusTodo(description) {
+    static plusTodo(id, description) {
         return new Promise((resolve, reject)=>{
-            const query = "INSERT INTO todo (description) VALUES(?);";
-            db.query(query, [description], (err)=>{
+            const query = "INSERT INTO todo (id ,description) VALUES(?, ?);";
+            db.query(query, [id, description], (err)=>{
                 if(err) reject (`${err}`);
                 resolve ({success : true});
             });

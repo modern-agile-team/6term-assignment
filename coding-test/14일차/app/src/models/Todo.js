@@ -13,13 +13,13 @@ class Todo {
     }
 
     async checktodo() {
-        const {description} = await this.body;
-        return TodolistStorage.reviseTodo(description);
+        const {id, is_check} = await this.body;
+        return TodolistStorage.reviseTodo(id, is_check);
     }
 
     async todolist() {
-        const {description} = await this.body;
-        return TodolistStorage.plusTodo(description);
+        const {id, description} = await this.body;
+        return TodolistStorage.plusTodo(id ,description);
     }
 }
 

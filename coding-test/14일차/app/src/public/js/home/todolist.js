@@ -13,10 +13,20 @@ window.addEventListener('DOMContentLoaded', ()=> {
         })
         .then((res)=>res.json())
         .then((data) => {
-            // console.log(data); //출력 결과 확인
+            console.log(data); //출력 결과 확인
             for(let i = 0; i < data.length; i++) {
+                const values = Object.values(data[i]);  
+                console.log(values);
+                addText(values[1], values[0]);   
+            }
+            for (let i =0; i < data.length; i++) {
                 const values = Object.values(data[i]);
-                addText(values[1]);
+                const cb = document.querySelector('.check-box');
+                const lineTh = document.querySelector('.print');
+                if(values[2] === 1) {
+                    cb.checked = true;
+                    lineTh.style.textDecorationLine = "line-through";
+                }
             }
         })
 });
@@ -24,14 +34,14 @@ window.addEventListener('DOMContentLoaded', ()=> {
 
 //plus 버튼 클릭 시 동작
 plusBtn.addEventListener('click', () => {
+    location.reload(true); //plus버튼을 누르면 동시에 새로고침
     let text = input.value;
 
     const req = {
         description: text,
     };
     if(text !== "") {
-        console.log(text);
-        addText(text);
+        addText();
         fetch('/todolist', {
             method: "POST", //rest의 전달 기능 (데이터 생성) 
             headers: {
@@ -44,28 +54,28 @@ plusBtn.addEventListener('click', () => {
             // 서버의 응답에 따른 추가 동작 수행
             console.log(data);
         })
-        console.log(text);
         input.value = '';
     } else {
         alert('입력이 필요합니다.');
     }
-    
 });
 
 //checkbox 체크 시 동작
-const checkBtn = document.querySelector('check-box');
-checkBtn.addEventListener('click', ()=> {
-    const is_checked = checkBtn.checked;
+const checkBtn = document.querySelector('.check-box');
+const itemId = document.querySelector('.print');
+checkBtn.addEventListener('change', ()=> {
     let checkNum = 0;
 
-    if(is_checked) {
+    if(checkBtn.checked) {
         input.style.textDecorationLine = "line-through";
         checkNum = 1;
     } else {
         input.style.textDecorateionLine = "none";
+        checkNum = 0;
     }
 
     const req = {
+        id: id,
         is_check: checkNum,
     }
 
@@ -85,9 +95,10 @@ checkBtn.addEventListener('click', ()=> {
 });
 
 //todo추가 함수
-function addText(text) {
+function addText(text, id) {
     const newDiv = document.createElement('div');
     newDiv.classList.add('divItem');
+    newDiv.id = id;
 
     //check박스
     const newCheckBox = document.createElement('input');
@@ -96,7 +107,10 @@ function addText(text) {
 
 
     //텍스트 넣기
-    const newText = document.createTextNode(text);
+    // const newText = document.createTextNode(text);
+    const createSpan = document.createElement('span');
+    createSpan.classList.add('print')
+    createSpan.innerText = text;
 
     //수정 버튼
     const revise = document.createElement('input');
@@ -111,7 +125,7 @@ function addText(text) {
     deleteBox.value = "🗑";
 
     //div에 넣기
-    newDiv.append(newCheckBox ,newText, revise, deleteBox);
+    newDiv.append(newCheckBox , createSpan, revise, deleteBox);
 
     document.querySelector('.s-box').appendChild(newDiv);     
   }

@@ -8,7 +8,8 @@
 #box {
     border: 3px solid red;
     width: 405px;
-    height: 154px;
+    /* height: 154px; */
+    height: auto;
 }
 
 #title {
@@ -39,7 +40,7 @@
 
 .s-box {
     width: 359.24px;
-    height: 34px;
+    height: auto;
     margin-left: 23.88px;
 }
 
