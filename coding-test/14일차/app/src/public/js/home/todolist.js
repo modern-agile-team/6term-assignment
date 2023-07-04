@@ -3,24 +3,22 @@
 const input = document.querySelector('#input');
 const plusBtn = document.querySelector('#button');
 
-window.addEventListener('DOMContentLoaded', ()=> {
-    let text = input.value;
-
-    newText(text);
-    const db_host = {
-        description: text,
-    };
-    
-    fetch('/loadtodo', {
-        method: "GET", //rest의 전달 기능  
-        headers: {
-            "Content-Type" : "application/json",
-        },
-        body: JSON.stringify(db_host),
-    })
-    .then((res)=>{
-        res.text()
-    });
+//페이지 로드시 db데이터 로드
+window.addEventListener('DOMContentLoaded', ()=> {   
+        fetch('/loadtodo', {
+            method: "GET", //rest의 전달 기능 (조회)
+            headers: {
+                "Content-Type" : "application/json",
+            },
+        })
+        .then((res)=>res.json())
+        .then((data) => {
+            // console.log(data); //출력 결과 확인
+            for(let i = 0; i < data.length; i++) {
+                const values = Object.values(data[i]);
+                addText(values[1]);
+            }
+        })
 });
 
 
@@ -32,9 +30,10 @@ plusBtn.addEventListener('click', () => {
         description: text,
     };
     if(text !== "") {
+        console.log(text);
         addText(text);
         fetch('/todolist', {
-            method: "POST", //rest의 전달 기능  
+            method: "POST", //rest의 전달 기능 (데이터 생성) 
             headers: {
                 "Content-Type" : "application/json",
             },
@@ -45,6 +44,7 @@ plusBtn.addEventListener('click', () => {
             // 서버의 응답에 따른 추가 동작 수행
             console.log(data);
         })
+        console.log(text);
         input.value = '';
     } else {
         alert('입력이 필요합니다.');
@@ -52,11 +52,37 @@ plusBtn.addEventListener('click', () => {
     
 });
 
-//del 버튼 클릭 시 동작
-// const delBtn = document.querySelector('.deleteBox');
-// delBtn.addEventListener('click', (value)=> {
+//checkbox 체크 시 동작
+const checkBtn = document.querySelector('check-box');
+checkBtn.addEventListener('click', ()=> {
+    const is_checked = checkBtn.checked;
+    let checkNum = 0;
 
-// });
+    if(is_checked) {
+        input.style.textDecorationLine = "line-through";
+        checkNum = 1;
+    } else {
+        input.style.textDecorateionLine = "none";
+    }
+
+    const req = {
+        is_check: checkNum,
+    }
+
+    fetch('/checkTodo', {
+        method: "PATCH", //rest의 전달 기능 (수정)
+        headers: {
+            "Content-Type" : "application/json",
+        },
+        body: JSON.stringify(req),
+    })
+    .then((res)=>res.text()
+    .then((data) => {
+        // 서버의 응답에 따른 추가 동작 수행
+        console.log(data);
+    })
+    );
+});
 
 //todo추가 함수
 function addText(text) {
@@ -65,7 +91,9 @@ function addText(text) {
 
     //check박스
     const newCheckBox = document.createElement('input');
-    newCheckBox.setAttribute('type','checkbox');
+    newCheckBox.classList.add('check-box');
+    newCheckBox.setAttribute('type', 'checkbox');
+
 
     //텍스트 넣기
     const newText = document.createTextNode(text);
@@ -87,4 +115,3 @@ function addText(text) {
 
     document.querySelector('.s-box').appendChild(newDiv);     
   }
-

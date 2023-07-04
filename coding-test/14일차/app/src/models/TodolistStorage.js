@@ -4,10 +4,20 @@ const db = require('../config/db');
 
 class TodolistStorage {
 
-    static loadtodo() {
+    static loadTodo() {
         return new Promise((resolve, reject)=> {
-            const query = "SELECT * FROM todo WHERE description";
-            db.query(query, [description], (err, data)=> {
+            const query = "SELECT id,description,is_check FROM todo";
+            db.query(query, (err, data)=> {
+                if(err) reject (`${err}`);
+                resolve (data);
+            })
+        })
+    }
+
+    static reviseTodo() {
+        return new Promise((resolve, reject)=> {
+            const query = "UPDATE todo SET is_check=(?) WHERE id = (?)";
+            db.query(query, [is_check], (err, data)=> {
                 if(err) reject (`${err}`);
                 resolve (data);
             })

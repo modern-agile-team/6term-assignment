@@ -36,8 +36,16 @@ const process = {
     },
 
     loadtodo: async (req, res) => {
+
         const todo = new Todo(req.body);
         const response = await todo.loadtodo();
+        return res.json(response);
+    },
+
+    checktodo: async (req, res) => {
+        console.log(req);
+        const todo = new Todo(req.body);
+        const response = await todo.checktodo();
         return res.json(response);
     },
 };
