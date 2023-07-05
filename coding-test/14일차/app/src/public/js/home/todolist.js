@@ -19,9 +19,9 @@ window.addEventListener('DOMContentLoaded', ()=> {
                 console.log(values);
                 addText(values[1], values[0], values[2]);   //db에서 불러온 데이터로 todo생성
             }
-            for (let i = 1; i < data.length+1; i++) {
-                ClickToChekBox(i);
-                ClickToDelete(i);
+            for (let i = 0; i < data.length; i++) {
+                ClickToChekBox(data[i].id);
+                ClickToDelete(data[i].id);
             }
         })
 });
@@ -96,20 +96,27 @@ function ClickToDelete(i) {
     const parentBox = document.getElementById(`divItem${i}`);
     deleteBtn.addEventListener('click', ()=> {
         parentBox.parentNode.removeChild(parentBox);
-    })
+        const req = {
+            id: i,
+        }
+        fetch('/deleteTodo', {
+            method: "DELETE", //rest의 전달 기능 (수정)
+            headers: {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify(req),
+        });
+    });
+}
 
-    fetch('/checkTodo', {
-        method: "DELETE", //rest의 전달 기능 (수정)
-        headers: {
-            "Content-Type" : "application/json",
-        },
-        body: JSON.stringify(req),
-    })
-    .then((res)=>res.json()) 
+//revise버튼 클릭 시 동작
+function ClickToRevise(i) {
+    const reviseBtn = document.getElementById(`revise${i}`);
+    
 }
 
 //todo추가 함수
-function addText(text, id, is_check=0) {
+function addText(text, id=1, is_check=0) {
     const newDiv = document.createElement('div');
     newDiv.classList.add('divItem');
     newDiv.id = `divItem${id}`;

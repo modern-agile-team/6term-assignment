@@ -19,6 +19,11 @@ class Todo {
         return TodolistStorage.reviseTodo(parseInt(id), is_check);
     }
 
+    async deltodo() {
+        const {id} = await this.body;
+        return TodolistStorage.deleteTodo(id);
+    }
+
     //todo생성시
     async todolist() {
         const {id, description} = await this.body;

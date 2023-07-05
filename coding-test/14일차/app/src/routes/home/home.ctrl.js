@@ -46,6 +46,12 @@ const process = {
         const response = await todo.checktodo();
         return res.json(response);
     },
+
+    deltodo: async (req, res) => {
+        const todo = new Todo(req.body);
+        const response = await todo.deltodo();
+        return res.json(response);
+    },
 };
 
 module.exports = {

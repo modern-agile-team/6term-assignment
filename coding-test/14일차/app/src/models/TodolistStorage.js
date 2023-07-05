@@ -26,6 +26,16 @@ class TodolistStorage {
         })
     }
 
+    static deleteTodo(id) {
+        return new Promise((resolve, reject)=>{
+            const query = "DELETE from todo WHERE id=(?)";
+            db.query(query, [id], (err)=>{
+                if(err) reject (`${err}`);
+                resolve ({success : true});
+            });
+        }); 
+    }
+
     //db에 새로운 데이터 저장(plus버튼 동작 시)
     static plusTodo(id, description) {
         return new Promise((resolve, reject)=>{

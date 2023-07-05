@@ -17,5 +17,7 @@ router.post("/todolist", ctrl.process.todolist); //데어터 추가
 
 router.patch("/checkTodo", ctrl.process.checktodo); //수정
 
+router.delete("/deleteTodo", ctrl.process.deltodo); //수정
+
 
 module.exports = router;
