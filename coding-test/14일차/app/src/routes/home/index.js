@@ -15,7 +15,7 @@ router.get("/loadtodo", ctrl.process.loadtodo);
 // router.post("/register", ctrl.process.register);
 router.post("/todolist", ctrl.process.todolist); //데어터 추가
 
-router.put("/checkTodo", ctrl.process.checktodo); //수정
+router.patch("/checkTodo", ctrl.process.checktodo); //수정
 
 
 module.exports = router;

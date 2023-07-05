@@ -15,18 +15,13 @@ window.addEventListener('DOMContentLoaded', ()=> {
         .then((data) => {
             console.log(data); //출력 결과 확인
             for(let i = 0; i < data.length; i++) {
-                const values = Object.values(data[i]);  
-                console.log(values);
-                addText(values[1], values[0]);   
-            }
-            for (let i =0; i < data.length; i++) {
                 const values = Object.values(data[i]);
-                const cb = document.querySelector('.check-box');
-                const lineTh = document.querySelector('.print');
-                if(values[2] === 1) {
-                    cb.checked = true;
-                    lineTh.style.textDecorationLine = "line-through";
-                }
+                console.log(values);
+                addText(values[1], values[0], values[2]);   //db에서 불러온 데이터로 todo생성
+            }
+            for (let i = 1; i < data.length+1; i++) {
+                ClickToChekBox(i);
+                ClickToDelete(i);
             }
         })
 });
@@ -41,7 +36,7 @@ plusBtn.addEventListener('click', () => {
         description: text,
     };
     if(text !== "") {
-        addText();
+        addText(text);
         fetch('/todolist', {
             method: "POST", //rest의 전달 기능 (데이터 생성) 
             headers: {
@@ -60,68 +55,89 @@ plusBtn.addEventListener('click', () => {
     }
 });
 
-//checkbox 체크 시 동작
-const checkBtn = document.querySelector('.check-box');
-const itemId = document.querySelector('.divItem');
-const printSpan = document.querySelector('.print');
-checkBtn.addEventListener('change', ()=> {
-    let checkNum = 0;
-    console.log(checkBtn.checked);
-
-    if(checkBtn.checked) {
-        printSpan.style.textDecorationLine = "line-through";
-        checkNum = 1;
-    } else {
-        printSpan.style.textDecorationLine = "";
+//checkbox 클릭 시 동작
+function ClickToChekBox(i) {
+    const checkBoxId = document.getElementById(`${i}`);
+    const printSpan = document.querySelector(`.print${i}`);
+    if(checkBoxId.value === "1") {
+        checkBoxId.checked = true;
+        printSpan.style.textDecoration = "line-through"; 
+    } else {    
+        checkBoxId.checked = false;
+        printSpan.style.textDecoration = "";
     }
+    checkBoxId.addEventListener('change', ()=> {
+        if(checkBoxId.value === "1") {
+            checkBoxId.value = "0";
+            printSpan.style.textDecorationLine = "";
+        } else {
+            checkBoxId.value = "1";
+            printSpan.style.textDecorationLine = "line-through";
+        }
 
-    const req = {
-        id: itemId.id,
-        is_check: checkNum,
-    }
+        const req = {
+            id: i,
+            is_check:checkBoxId.value,
+        }
+        fetch('/checkTodo', {
+            method: "PATCH", //rest의 전달 기능 (수정)
+            headers: {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify(req),
+        })
+        .then((res)=>res.json())
+    });
+}
+
+//delete버튼 클릭 시 동작
+function ClickToDelete(i) {
+    const deleteBtn = document.getElementById(`delete${i}`);
+    const parentBox = document.getElementById(`divItem${i}`);
+    deleteBtn.addEventListener('click', ()=> {
+        parentBox.parentNode.removeChild(parentBox);
+    })
 
     fetch('/checkTodo', {
-        method: "PATCH", //rest의 전달 기능 (수정)
+        method: "DELETE", //rest의 전달 기능 (수정)
         headers: {
             "Content-Type" : "application/json",
         },
         body: JSON.stringify(req),
     })
-    .then((res)=>res.json())
-    .then((data) => {
-        // 서버의 응답에 따른 추가 동작 수행
-        console.log(data);
-    })
-});
+    .then((res)=>res.json()) 
+}
 
 //todo추가 함수
-function addText(text, id) {
+function addText(text, id, is_check=0) {
     const newDiv = document.createElement('div');
     newDiv.classList.add('divItem');
-    newDiv.id = id;
+    newDiv.id = `divItem${id}`;
 
     //check박스
     const newCheckBox = document.createElement('input');
     newCheckBox.classList.add('check-box');
     newCheckBox.setAttribute('type', 'checkbox');
-
+    newCheckBox.value = is_check;
+    newCheckBox.id = id;
 
     //텍스트 넣기
-    // const newText = document.createTextNode(text);
     const createSpan = document.createElement('span');
-    createSpan.classList.add('print')
+    createSpan.classList.add(`print${id}`);
     createSpan.innerText = text;
 
     //수정 버튼
     const revise = document.createElement('input');
-    revise.classList.add('revise')
+    revise.classList.add('reviseBox')
     revise.setAttribute('type','button');
+    revise.id = `revise${id}`
     revise.value = "✏"
 
     //삭제 버튼
     const deleteBox = document.createElement('input');
-    deleteBox.classList.add('deleteBox');
+    deleteBox.classList.add(`deleteBox`);
     deleteBox.setAttribute('type','button');
+    deleteBox.id = `delete${id}`
     deleteBox.value = "🗑";
 
     //div에 넣기

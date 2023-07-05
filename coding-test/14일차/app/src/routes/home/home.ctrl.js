@@ -32,7 +32,6 @@ const process = {
     todolist: async (req, res) => {
         const todo = new Todo(req.body);
         const response = await todo.todolist();
-        console.log(res);
         return res.json(response);
     },
 
