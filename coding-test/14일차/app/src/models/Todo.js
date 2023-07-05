@@ -19,6 +19,11 @@ class Todo {
         return TodolistStorage.reviseTodo(parseInt(id), is_check);
     }
 
+    async revisetodo() {
+        const {id, description} = await this.body;
+        return TodolistStorage.editTodo(id ,description);
+    }
+
     async deltodo() {
         const {id} = await this.body;
         return TodolistStorage.deleteTodo(id);

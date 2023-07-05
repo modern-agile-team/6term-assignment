@@ -47,11 +47,18 @@ const process = {
         return res.json(response);
     },
 
+    revisetodo: async (req, res) => {
+        const todo = new Todo(req.body);
+        const response = await todo.revisetodo();
+        return res.json(response);
+    },
+
     deltodo: async (req, res) => {
         const todo = new Todo(req.body);
         const response = await todo.deltodo();
         return res.json(response);
     },
+
 };
 
 module.exports = {

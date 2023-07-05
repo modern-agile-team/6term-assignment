@@ -22,8 +22,18 @@ class TodolistStorage {
             db.query(query, [is_check ,id], (err, data)=> {
                 if(err) reject (`${err}`);
                 resolve (data);
-            })
-        })
+            });
+        });
+    }
+
+    static editTodo(id, description) {
+        return new Promise((resolve, reject)=> {
+            const query = "UPDATE todo SET description=(?) WHERE id = (?)";
+            db.query(query, [description ,id], (err, data)=> {
+                if(err) reject (`${err}`);
+                resolve (data);
+            });
+        });
     }
 
     static deleteTodo(id) {

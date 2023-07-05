@@ -16,6 +16,7 @@ router.get("/loadtodo", ctrl.process.loadtodo);
 router.post("/todolist", ctrl.process.todolist); //데어터 추가
 
 router.patch("/checkTodo", ctrl.process.checktodo); //수정
+router.patch("/reviseTodo", ctrl.process.revisetodo);
 
 router.delete("/deleteTodo", ctrl.process.deltodo); //수정
 
