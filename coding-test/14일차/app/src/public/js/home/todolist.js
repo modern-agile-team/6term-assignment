@@ -20,8 +20,12 @@ window.addEventListener('DOMContentLoaded', ()=> {
                 addText(values[1], values[0], values[2]);   //db에서 불러온 데이터로 todo생성
             }
             for (let i = 0; i < data.length; i++) {
+                //체크박스 on/off
                 ClickToChekBox(data[i].id);
+                //todo 삭제
                 ClickToDelete(data[i].id);
+                //todo 수정
+                ClickToRevise(data[i].id);
             }
         })
 });
@@ -57,8 +61,8 @@ plusBtn.addEventListener('click', () => {
 
 //checkbox 클릭 시 동작
 function ClickToChekBox(i) {
-    const checkBoxId = document.getElementById(`${i}`);
-    const printSpan = document.querySelector(`.print${i}`);
+    const checkBoxId = document.getElementById(`check${i}`);
+    const printSpan = document.querySelector(`#print${i}`);
     if(checkBoxId.value === "1") {
         checkBoxId.checked = true;
         printSpan.style.textDecoration = "line-through"; 
@@ -112,7 +116,11 @@ function ClickToDelete(i) {
 //revise버튼 클릭 시 동작
 function ClickToRevise(i) {
     const reviseBtn = document.getElementById(`revise${i}`);
-    
+    const items = document.querySelectorAll(`print${i}`);
+    reviseBtn.addEventListener('click', ()=> {
+        const item = items[idx];
+        item.classList.add('edit_active');
+    });
 }
 
 //todo추가 함수
@@ -126,12 +134,13 @@ function addText(text, id=1, is_check=0) {
     newCheckBox.classList.add('check-box');
     newCheckBox.setAttribute('type', 'checkbox');
     newCheckBox.value = is_check;
-    newCheckBox.id = id;
+    newCheckBox.id = `check${id}`;
 
     //텍스트 넣기
     const createSpan = document.createElement('span');
-    createSpan.classList.add(`print${id}`);
+    createSpan.classList.add(`print`);
     createSpan.innerText = text;
+    createSpan.id = `print${id}`;
 
     //수정 버튼
     const revise = document.createElement('input');
