@@ -59,24 +59,59 @@ plusBtn.addEventListener('click', () => {
     }
 });
 
+//입력하고 enter시 작동
+input.addEventListener('keyup', (e) => {
+    if(e.keyCode === 13){
+        location.reload(true); //plus버튼을 누르면 동시에 새로고침
+        let text = input.value
+    
+        const req = {
+            description: text,
+        };
+        if(text !== "") {
+            addText(text);
+            fetch('/todolist', {
+                method: "POST", //rest의 전달 기능 (데이터 생성) 
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(req),
+            })
+            .then((res) => res.text())
+            .then((data) => {
+                // 서버의 응답에 따른 추가 동작 수행
+                console.log(data);
+            })
+            input.value = '';
+        } else {
+            alert('입력이 필요합니다.');
+        }
+    }
+});
+
 //checkbox 클릭 시 동작
 function ClickToChekBox(i) {
     const checkBoxId = document.getElementById(`check${i}`);
     const printSpan = document.querySelector(`#print${i}`);
+    const reviseBtn = document.getElementById(`revise${i}`);
     if(checkBoxId.value === "1") {
         checkBoxId.checked = true;
-        printSpan.style.textDecoration = "line-through"; 
+        printSpan.style.textDecoration = "line-through";
+        reviseBtn.style.display = "none";
     } else {    
         checkBoxId.checked = false;
         printSpan.style.textDecoration = "";
+        reviseBtn.style.display = "block";
     }
     checkBoxId.addEventListener('change', ()=> {
         if(checkBoxId.value === "1") {
             checkBoxId.value = "0";
             printSpan.style.textDecorationLine = "";
+            reviseBtn.style.display = "block";
         } else {
             checkBoxId.value = "1";
             printSpan.style.textDecorationLine = "line-through";
+            reviseBtn.style.display = "none";
         }
 
         const req = {
@@ -133,12 +168,17 @@ function ClickToRevise(i) {
 
     finBtn.addEventListener('click', ()=> {
         const editText = reSpan.value;
-        createSpan.innerText = editText;
-        createSpan.style.display = 'block';
-        reviseBtn.style.display = "block";
-        reSpan.style.display = "none";
-        finBtn.style.display = "none";
-
+        if(editText !== "") {
+            createSpan.innerText = editText;
+            createSpan.style.display = 'block';
+            reviseBtn.style.display = "block";
+            reSpan.style.display = "none";
+            finBtn.style.display = "none";
+        }else {
+            alert('값을 입력하세요.');
+            
+        }
+        
         const req = {
             id: i,
             description: editText,
@@ -153,6 +193,37 @@ function ClickToRevise(i) {
         })
         .then((res)=>res.text())
         .then((data)=> console.log(data));
+    });
+
+    reSpan.addEventListener('keyup', (e)=> {
+        if(e.keyCode === 13) {
+            const editText = reSpan.value;
+            if(editText !== "") {
+                createSpan.innerText = editText;
+                createSpan.style.display = 'block';
+                reviseBtn.style.display = "block";
+                reSpan.style.display = "none";
+                finBtn.style.display = "none";
+            }else {
+                alert('값을 입력하세요.');
+                
+            }
+            
+            const req = {
+                id: i,
+                description: editText,
+            };
+    
+            fetch('/reviseTodo', {
+                method: "PATCH",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(req)
+            })
+            .then((res)=>res.text())
+            .then((data)=> console.log(data));
+        }
     });
 
 }
@@ -183,25 +254,23 @@ function addText(text, id=1, is_check=0) {
     reSpan.style.display = "none";
 
     //수정 버튼
-    const revise = document.createElement('input');
-    revise.classList.add('reviseBox')
+    const revise = document.createElement('i');
+    revise.classList.add('reviseBox', "fa-solid", "fa-pen");
     revise.setAttribute('type','button');
     revise.id = `revise${id}`;
-    revise.value = "✏"
     const finBtn = document.createElement('input');
     //수정버튼 클릭 시 확인 버튼(display:none)
     finBtn.classList.add('finBtn');
     finBtn.id = `fin${id}`;
-    finBtn.value = "확인";
+    finBtn.value = "완료";
     finBtn.setAttribute('type', 'button');
     finBtn.style.display = "none";
 
     //삭제 버튼
-    const deleteBox = document.createElement('input');
-    deleteBox.classList.add(`deleteBox`);
+    const deleteBox = document.createElement('i');
+    deleteBox.classList.add(`deleteBox`, "fa-solid","fa-trash");
     deleteBox.setAttribute('type','button');
     deleteBox.id = `delete${id}`
-    deleteBox.value = "🗑";
 
     //div에 넣기
     newDiv.append(newCheckBox , createSpan,reSpan, revise,finBtn, deleteBox);
